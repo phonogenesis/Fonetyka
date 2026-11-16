@@ -19,6 +19,7 @@ const eslintConfig = [
       'public/swe-worker-*.js',
       'public/workbox-*.js',
       'next-env.d.ts',
+      'research/**',
     ],
   },
 ]

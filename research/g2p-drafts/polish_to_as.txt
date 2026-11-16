@@ -1,0 +1,59 @@
+I wrote polish_to_as.js, a rule-based transcriber, and ran it on 20 sample words and phrases. The output for each matched what I expected from standard Polish pronunciation.
+
+Usage
+
+js
+const { transcribe } = require('./polish_to_as');
+transcribe('Dzień dobry');   // "dźeń dobry"
+transcribe('Jak się masz?'); // "jak śe maš?"
+transcribe('Mężczyzna');     // "męščyzna"
+
+How it works
+
+Orthography to segments. Digraphs become single symbols: sz→š, cz→č, rz/ż→ž, ch/h→x, dz/dź/dż. The letter ł→ŭ, and ó→u. A spelled i before a vowel marks softness and is not pronounced: ci→ć, si→ś, zi→ź, ni→ń, dzi→dź. After labials and velars it gives pʹ, bʹ, kʹ, gʹ, and so on.
+Voicing. Three passes run in order:
+w and rz devoice after a voiceless consonant (trzy→tšy, kwiat→kfʹat).
+Word-final devoicing applies (chleb→xlep).
+Regressive assimilation runs right to left (brat zosi→brad zośi).
+Nasal vowels. ą and ę depend on the next sound:
+Before a stop or affricate, they become vowel + m/n/ŋ/ń (dąb→domp, pięć→pʹeńć).
+Before ł or l, they become a plain vowel (wzięli→vźeli).
+Word-finally, ę→e and ą→ǫ.
+Before fricatives, they stay nasal (męščyzna).
+Non-syllabic u. After a or e it becomes ŭ (Europa→eŭropa).
+
+Options
+
+lSymbol: write ł as 'ŭ' (default) or 'ł'.
+palatalMark: default 'ʹ'.
+sandhi: default true; set to false to stop voicing rules applying across word boundaries.
+
+Limitations
+
+It doesn't mark stress, and it ignores morpheme boundaries, so rz and dz are always treated as digraphs.
+It doesn't know loanword exceptions.
+With sandhi on, word-final consonants keep their voicing before a vowel or sonorant, which is the Kraków–Poznań style. Warsaw speakers would devoice them. Setting sandhi: false devoices every final consonant.
+Notation for ł, ǫ and the palatal mark varies between Slavic transcription traditions, so check these against the style guide you need.
+
+------------------------
+
+
+I ported the transcriber to TypeScript as polish_to_as.ts. It passes tsc --strict with no errors, and it gives the same output as the JavaScript version on all 20 of my test words.
+
+Usage
+
+￼
+
+ts
+import { transcribe } from './polish_to_as';
+
+transcribe('Dzień dobry');                 // "dźeń dobry"
+transcribe('Łódź', { lSymbol: 'ł' });      // "łuć"
+transcribe('Brat zosi', { sandhi: false }); // "brat zośi"
+What changed from the JS version
+
+Types: TranscribeOptions is exported. Segment and Separator form a discriminated union on kind, so the compiler checks which fields each item has.
+Type guards: isSegment and isObs narrow types, which avoids casts in the voicing and nasal passes.
+Options: lSymbol is now limited to 'ŭ' | 'ł', and DEFAULTS is read-only.
+Exports: It has both a named export transcribe and a default export.
+The algorithm, the rules, the options and the limitations are the same as in the JavaScript version. Stress isn't marked, morpheme boundaries are ignored, and the sandhi default follows the Kraków–Poznań style.

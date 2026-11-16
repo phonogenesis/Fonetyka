@@ -9,3 +9,6 @@ next-env.d.ts
 
 *.yaml
 *.yml
+
+# research drafts kept verbatim
+research/
