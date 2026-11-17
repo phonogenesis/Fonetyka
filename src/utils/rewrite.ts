@@ -1,3 +1,27 @@
+/*
+ * Fonetyka – Polish phonetic transcription generator
+ * Copyright (C) 2023-2025 Jakub Kłało <https://github.com/Quanosek/Fonetyka>
+ * Copyright (C) 2026 Przemysław Grądzki
+ *
+ * Modified 2026-11-16 by Przemysław Grądzki
+ * for the research project "Euphony in Adam Mickiewicz's Writings. Genetic
+ * Approach" (National Science Centre, Poland, grant no. 2024/55/B/HS2/01013):
+ * - rewriteKlalo(): the original AS algorithm applied line by line,
+ *   used by the page for comparison with the ArFi transcription.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import letters from './formats/alphabet.json'
 import format_AS from './formats/AS'
 import format_IPA from './formats/IPA'
@@ -104,7 +128,21 @@ export function reduceRepeat(word: string) {
   return word
 }
 
-// zwracanie obiektu z danymi
+// oryginalny algorytm KLALO (AS), wyraz po wyrazie, z zachowaniem podziału na wiersze
+export function rewriteKlalo(input: string) {
+  return input
+    .toLowerCase()
+    .split('\n')
+    .map((line) =>
+      line
+        .split(/[^a-ząćęłńóśźż]+/)
+        .filter(Boolean)
+        .map((word) => format_AS(word))
+        .join(' ')
+    )
+}
+
+// oryginalny zapis par [AS] [IPA] – zachowany dla zgodności
 export default function rewrite(input: string) {
   const words = input.toLowerCase().split(/[" "|"\n"]/g)
 

@@ -1,5 +1,6 @@
 {
   "version": "0.9.2",
+  "license": "GPL-3.0-only",
   "name": "fonetyka",
   "description": "Transform Polish words into phonetic transcription using AS and IPA standards",
   "private": true,
@@ -12,7 +13,9 @@
     "lint:fix": "eslint --fix",
     "format": "pnpm exec prettier . --write",
     "format:check": "pnpm exec prettier . --check",
-    "validate": "pnpm run lint && pnpm run format:check"
+    "validate": "pnpm run lint && pnpm run format:check && pnpm run test",
+    "test": "node --experimental-strip-types --test tests/arfi.test.mjs",
+    "arfi": "node --experimental-strip-types scripts/arfi-cli.mjs"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",

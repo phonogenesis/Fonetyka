@@ -1,3 +1,26 @@
+/*
+ * Fonetyka – Polish phonetic transcription generator
+ * Copyright (C) 2023-2025 Jakub Kłało <https://github.com/Quanosek/Fonetyka>
+ * Copyright (C) 2026 Przemysław Grądzki
+ *
+ * Modified 2026-11-16 by Przemysław Grądzki
+ * for the research project "Euphony in Adam Mickiewicz's Writings. Genetic
+ * Approach" (National Science Centre, Poland, grant no. 2024/55/B/HS2/01013):
+ * - styles for the transcription options panel and the warnings list.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 .titleImage {
   user-select: none;
 
@@ -325,4 +348,77 @@ $max_width: 1440px;
     max-inline-size: unset;
     max-block-size: unset;
   }
+}
+
+// --- opcje transkrypcji ArFi ---
+.options {
+  width: min(100%, 1440px);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 95%;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  select,
+  input[type='checkbox'] {
+    appearance: auto;
+  }
+
+  select {
+    padding: 0.3rem 0.5rem;
+    color: #101010;
+    background-color: #e9e9e9;
+    border-radius: 0.35rem;
+  }
+
+  summary {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .engine {
+    font-weight: 500;
+    flex-wrap: wrap;
+  }
+
+  .optionsGrid {
+    margin: 0.75rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    gap: 0.5rem 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .exceptions {
+    flex-direction: column;
+    align-items: stretch;
+
+    textarea {
+      min-height: 5rem;
+      padding: 0.5rem 0.75rem;
+      color: #101010;
+      background-color: #e9e9e9;
+      border-radius: 0.35rem;
+      resize: vertical;
+    }
+  }
+}
+
+.warnings {
+  width: min(100%, 1440px);
+  margin-top: 1rem;
+  padding: 0.75rem 1rem 0.75rem 2rem;
+  list-style: disc;
+  font-size: 90%;
+  border: 1px solid #e0b040;
+  border-radius: 0.35rem;
 }
